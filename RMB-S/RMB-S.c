@@ -17,7 +17,7 @@
 
 // int.dblp.txt
 // ------------------------------------------------
-// #define THRESHOLD 0.045 // 2
+ #define THRESHOLD 0.045 // 2
 // #define THRESHOLD 0.053 // 4
 // #define THRESHOLD 0.073 // 6
 // #define THRESHOLD 0.050 // 8
@@ -33,8 +33,8 @@
 
 // int.protein.txt
 // ------------------------------------------------
-#define THRESHOLD 0.058 // 2
-// #define THRESHOLD 0.124 // 4
+// #define THRESHOLD 0.034 // 2
+// #define THRESHOLD 0.044 // 4
 // #define THRESHOLD 0.037 // 6
 // #define THRESHOLD 0.037 // 8
 //#define THRESHOLD 0.125 // 10
