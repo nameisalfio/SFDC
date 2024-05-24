@@ -177,9 +177,11 @@ int main(int argc, char **argv) {
     int totsh=0;
     int maxsh = 0;
 
-    double compressed = get_compressed_size(root, map, codelen);
-    printf("Compressed text : %.2f bytes\n", compressed);fflush(stdout);
-    printf("Compression ratio : %.2f\n", compressed/(double)n);fflush(stdout);
+    double compressed_size = get_compressed_size(root, map, codelen);
+    int tree_size = get_tree_size(root, 0);
+    printf("Size of the Huffman tree : %d bytes\n", tree_size);fflush(stdout);
+    printf("Compressed text : %.2f bytes\n", compressed_size);fflush(stdout);
+    printf("Compression ratio : %.2f\n", compressed_size/(double)n);fflush(stdout);
 
     /*
     // Print Huffman tree

@@ -24,8 +24,8 @@
 
 // int.english.txt
 // ------------------------------------------------
-//#define THRESHOLD 0.003688 // 1000
-// #define THRESHOLD 0.003202 // 1000 * 10
+// #define THRESHOLD 0.014752 // 1000
+// #define THRESHOLD 0.003603 // 1000 * 10
 // #define THRESHOLD 0.003688 // 1000 * 100
 // #define THRESHOLD 0.004316 // 1000 * 1000
 // #define THRESHOLD 0.000961 // 1000 * 1000 * 10
@@ -83,6 +83,25 @@ bool has_significant_change(int *freq1, int *freq2, int size, double *dist_cum)
     *dist_cum += cos_dist;
     return cos_dist >= THRESHOLD;
 }
+
+bool char_in_tree(int c, HNODE *node)
+{
+    if (node == NULL)
+        return false;
+    if (node->is_char)
+        return node->c == c;
+
+    return char_in_tree(c, node->left) || char_in_tree(c, node->right);
+}
+
+bool all_chars_in_prev_tree(int *block, HNODE *prev_tree, int size)
+{
+    for (int i = 0; i < size; i++)
+        if (!char_in_tree(block[i], prev_tree))
+            return false;
+    return true;
+}
+
 
 // verifies the existence of the file in the filesystem
 bool file_exists(char *filename)
@@ -294,13 +313,13 @@ int main(int argc, char **argv)
         nchars = compute_freq(text, n, freq, maxval);
 
         // build new huffman tree if there is a significant change in the frequencies
-        if (block_index == 0 || has_significant_change(prev_freq, freq, maxval, &dist_cum))
+        if (block_index == 0 || has_significant_change(prev_freq, freq, maxval, &dist_cum) || !all_chars_in_prev_tree(text, root, n))
         {
             build_huffman_codes(text, n, maxval, hset, map, codelen, freq);
             root = hset[0];
             build_codeset(map, codelen, root, 0, 0);
 
-            tree_size = get_tree_size(root);
+            tree_size = get_tree_size(root, 0);
             total_tree_size += tree_size;
             ntrees++;
         }

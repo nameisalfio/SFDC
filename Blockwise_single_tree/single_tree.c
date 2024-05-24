@@ -11,7 +11,7 @@
 #include "../SFDC-delta.c"
 #include "../SFDC-gamma.c"
 
-#define BLOCK_SIZE 1000 * 1000 * 100
+#define BLOCK_SIZE 1000 * 1
 
 int get_print_interval(int total_blocks)
 {
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
     build_huffman_codes(text, n, maxval, hset, map, codelen, freq);
     root = hset[0];
     build_codeset(map, codelen, root, 0, 0);
-    int tree_size = get_tree_size(root);
+    int tree_size = get_tree_size(root, 0);
     long unsigned total_compressed_size = 0;
     double total_weighted_avgdelay = 0.0;
     double total_weighted_avgbits = 0.0;

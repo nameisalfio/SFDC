@@ -12,30 +12,30 @@
 #include "../SFDC-gamma.c"
 #include "list.c"
 
-#define RANK 2 // Number of rare markers
-#define K 20   // Common chars sequence length
+#define RANK 4 // Number of rare markers
+#define K 200   // Common chars sequence length
 
 // int.dblp.txt
 // ------------------------------------------------
- #define THRESHOLD 0.045 // 2
-// #define THRESHOLD 0.053 // 4
-// #define THRESHOLD 0.073 // 6
-// #define THRESHOLD 0.050 // 8
-// #define THRESHOLD 0.043 // 10
+// #define THRESHOLD 0.007 // 2
+// #define THRESHOLD 0.010 // 4
+// #define THRESHOLD 0.009 // 6
+// #define THRESHOLD 0.012 // 8
+// #define THRESHOLD 0.013 // 10
 
 // int.english.txt
 // ------------------------------------------------
-// #define THRESHOLD 0.162 // 2
-// #define THRESHOLD 0.125 // 4
-// #define THRESHOLD 0.113 // 6
-// #define THRESHOLD 0.118 // 8
-// #define THRESHOLD 0.126 // 10
+// #define THRESHOLD 0.095 // 2
+#define THRESHOLD 0.030 // 4
+// #define THRESHOLD 0.028 // 6
+// #define THRESHOLD 0.026 // 8
+// #define THRESHOLD 0.028 // 10
 
 // int.protein.txt
 // ------------------------------------------------
 // #define THRESHOLD 0.034 // 2
 // #define THRESHOLD 0.044 // 4
-// #define THRESHOLD 0.037 // 6
+// #define THRESHOLD 0.046 // 6
 // #define THRESHOLD 0.037 // 8
 //#define THRESHOLD 0.125 // 10
 
@@ -391,7 +391,7 @@ int main(int argc, char **argv)
     int max_block_size = 0;
 
     // RARE MARKER BLOCK-SEGMENTATION ******************************************
-    printf("\nRARE MARKER BLOCK-SEGMENTATION (RANK %d)...\n", RANK); // migiorare la suddivisione con una soglia
+    printf("\nRARE MARKER BLOCK-SEGMENTATION (RANK %d)...\n", RANK);
     fflush(stdout);
     while (block_start < N)
     {
@@ -498,7 +498,7 @@ int main(int argc, char **argv)
             root = hset[0];
             build_codeset(map, codelen, root, 0, 0);
 
-            tree_size = get_tree_size(root);
+            tree_size = get_tree_size(root, 0);
             total_tree_size += tree_size;
             ntrees++;
         }

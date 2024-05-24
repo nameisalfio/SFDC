@@ -236,9 +236,10 @@ int get_compressed_size(HNODE *root, uint64_t *map, int* codelen) {
     return (total_bits + 7) / 8; // round up to nearest byte
 }
 
-size_t get_tree_size(HNODE *root) {
+size_t get_tree_size(HNODE *root, size_t depth) {
     if (root == NULL) return 0;
-    return sizeof(*root) + get_tree_size(root->left) + get_tree_size(root->right);
+    if (root->left == NULL && root->right == NULL) return depth; // leaf
+    return depth + get_tree_size(root->left, depth + 1) + get_tree_size(root->right, depth + 1); 
 }
 
 bool are_equal(HNODE *root1, HNODE *root2) {
