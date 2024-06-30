@@ -12,8 +12,8 @@
 #include "../SFDC-gamma.c"
 #include "list.c"
 
-#define RANK 4 // Number of rare markers
-#define K 200   // Common chars sequence length
+#define RANK 10 // Number of rare markers
+#define BETA 20   // Common chars sequence length
 
 // int.dblp.txt
 // ------------------------------------------------
@@ -26,7 +26,7 @@
 // int.english.txt
 // ------------------------------------------------
 // #define THRESHOLD 0.095 // 2
-#define THRESHOLD 0.030 // 4
+// #define THRESHOLD 0.030 // 4
 // #define THRESHOLD 0.028 // 6
 // #define THRESHOLD 0.026 // 8
 // #define THRESHOLD 0.028 // 10
@@ -37,7 +37,7 @@
 // #define THRESHOLD 0.044 // 4
 // #define THRESHOLD 0.046 // 6
 // #define THRESHOLD 0.037 // 8
-//#define THRESHOLD 0.125 // 10
+#define THRESHOLD 0.125 // 10
 
 typedef struct
 {
@@ -242,18 +242,18 @@ int check_decoding(int *x, int *y, int i, int j)
 }
 
 // reads a sequence of integers from a file and stores them in text
-int load_int(char *filename, int n, unsigned int *text)
+int load_int(char *filename, int n, int *text)
 {
     FILE *fp = fopen(filename, "r");
     int i = 0;
-    while (i < n && fread(&text[i], sizeof(unsigned int), 1, fp) == 1)
+    while (i < n && fread(&text[i], sizeof(int), 1, fp) == 1)
         i++;
     fclose(fp);
     return i;
 }
 
 // reads an indexed block of size block_lenght
-int load_block(char *filename, unsigned int *text, int n, int block_start)
+int load_block(char *filename, int *text, int n, int block_start)
 {
     FILE *fp = fopen(filename, "r");
 
@@ -266,7 +266,7 @@ int load_block(char *filename, unsigned int *text, int n, int block_start)
     }
 
     int i = 0;
-    while (i < n && fread(&text[i], sizeof(unsigned int), 1, fp) == 1)
+    while (i < n && fread(&text[i], sizeof(int), 1, fp) == 1)
         i++;
     fclose(fp);
     return i;
@@ -380,7 +380,7 @@ int main(int argc, char **argv)
     List *original_blocks = new_list();
     STACKNODE *stack = (STACKNODE *)malloc(sizeof(STACKNODE) * n);
     HNODE *root = NULL;
-    unsigned int *block_data = NULL;
+    int *block_data = NULL;
 
     int block_start = 0;
     int block_length = 0;
@@ -405,9 +405,9 @@ int main(int argc, char **argv)
                     next_block_start++;
                 } while (next_block_start < N && is_rare_marker(infrequents, text[next_block_start]));
 
-                // include rare markers within K characters distance
+                // include rare markers within BETA characters distance
                 int lookahead = next_block_start;
-                while (lookahead < N && lookahead - next_block_start <= K)
+                while (lookahead < N && lookahead - next_block_start <= BETA)
                 {
                     if (is_rare_marker(infrequents, text[lookahead]))
                     {
@@ -628,11 +628,11 @@ int main(int argc, char **argv)
     fflush(stdout);
     for (block_index = 0; block_index < total_blocks; block_index++)
     {
-        unsigned int *block_data = (unsigned int *)get_by_idx(original_blocks, block_index);
+        int *block_data = (int *)get_by_idx(original_blocks, block_index);
         int block_length = (int)(intptr_t)get_by_idx(block_sizes, block_index);
 
-        unsigned int *block_decoded_text = (unsigned int *)malloc(sizeof(unsigned int) * block_length);
-        memset(block_decoded_text, 0, sizeof(unsigned int) * block_length);
+        int *block_decoded_text = (int *)malloc(sizeof(int) * block_length);
+        memset(block_decoded_text, 0, sizeof(int) * block_length);
 
         // decode the block
         clock_t decode_start = clock();
@@ -714,7 +714,7 @@ int main(int argc, char **argv)
 
     // free memory
     for (int i = 0; i < total_blocks; i++)
-        huffman_trees[i];
+        free(huffman_trees[i]);
     free(huffman_trees);
     free(text);
     free(hset);

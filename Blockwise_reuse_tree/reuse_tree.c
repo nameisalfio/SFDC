@@ -147,11 +147,11 @@ int check_decoding(int *x, int *y, int i, int j)
 }
 
 // reads a sequence of integers from a file, stores them in text
-int load_int(char *filename, int n, unsigned int *text)
+int load_int(char *filename, int n, int *text)
 {
     FILE *fp = fopen(filename, "r");
     int i = 0;
-    while (i < n && fread(&text[i], sizeof(unsigned int), 1, fp) == 1)
+    while (i < n && fread(&text[i], sizeof(int), 1, fp) == 1)
         i++;
     fclose(fp);
     return i;
@@ -167,7 +167,7 @@ int load_int_block(char *filename, int *text, int block_size, int block_index)
         return 0;
     }
 
-    fseek(fp, block_index * block_size * sizeof(unsigned int), SEEK_SET);
+    fseek(fp, block_index * block_size * sizeof(int), SEEK_SET);
     int i = 0;
     while (i < block_size && !feof(fp))
     {
@@ -210,7 +210,6 @@ int main(int argc, char **argv)
     // LOAD FILE AND COMPUTE SOME STATS ********************************
     int n = INT_MAX;
     int sz = get_file_size(file);
-    // sz = BLOCK_SIZE * 4;
     printf("File size : %d Bytes\n", sz);
     fflush(stdout); // size of the file in bytes
     printf("Block size : %d Bytes\n\n", BLOCK_SIZE);
@@ -283,7 +282,7 @@ int main(int argc, char **argv)
     STACKNODE *stack = (STACKNODE *)malloc(sizeof(STACKNODE) * n);
     HNODE **huffman_trees = (HNODE **)malloc(sizeof(HNODE *) * total_blocks);
     uint32_t ***encoded_blocks = (uint32_t ***)malloc(sizeof(uint32_t **) * total_blocks);
-    uint32_t **original_blocks = (uint32_t **)malloc(sizeof(uint32_t *) * total_blocks);
+    int **original_blocks = (int **)malloc(sizeof(int *) * total_blocks);
     HNODE *root = NULL;
     int total_tree_size = 0;
     int tree_size = 0;
@@ -298,7 +297,7 @@ int main(int argc, char **argv)
         int compressed_size = 0;
         int block_length = (block_index == total_blocks - 1 && sz % BLOCK_SIZE != 0) ? sz % BLOCK_SIZE : BLOCK_SIZE;
         n = load_int_block(file, text, block_length, block_index);
-        unsigned int *block_data = (int *)malloc(sizeof(int) * block_length);
+        int *block_data = (int *)malloc(sizeof(int) * block_length);
 
         // compute maxval, avgval and frequencies
         maxval = 0;
@@ -442,7 +441,7 @@ int main(int argc, char **argv)
         int block_length = (block_index == total_blocks - 1 && sz % BLOCK_SIZE != 0) ? sz % BLOCK_SIZE : BLOCK_SIZE;
 
         // load the encoded block
-        unsigned int *block_decoded_text = (unsigned int *)malloc(sizeof(unsigned int) * block_length);
+        int *block_decoded_text = (int *)malloc(sizeof(int) * block_length);
         clock_t decode_start = clock();
 
         // decode the block

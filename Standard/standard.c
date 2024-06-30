@@ -61,7 +61,7 @@ int load_int_block(char *filename, int *text, int block_size, int block_index)
     printf("Loaded block %d of file %s\n", block_index, filename); fflush(stdout);
     printf("\033[0m"); 
     */
-    fseek(fp, block_index * block_size * sizeof(unsigned int), SEEK_SET);
+    fseek(fp, block_index * block_size * sizeof(int), SEEK_SET);
     int i = 0;
     while (i < block_size && !feof(fp))
     {
