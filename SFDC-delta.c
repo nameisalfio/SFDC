@@ -91,8 +91,8 @@ uint32_t **delta_encode(int *y, int n, uint64_t *map, int *codelen, int nlayers,
 
 
     // print stats for block
-    for (int i = 0; i < n; i++)
-        printf("Text[%d] = %d \tdelay %d | Remaining: %d\n", i, y[i], delay[i], n - i);
+    //for (int i = 0; i < n; i++)
+        //printf("Text[%d] = %d \tdelay %d | Remaining: %d\n", i, y[i], delay[i], n - i);
 
     //printf("\nText[%d] = %d has highest delay of %d on a text of length %d\n", max_delay_index, y[max_delay_index], max_delay, n);
 

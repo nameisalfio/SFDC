@@ -11,7 +11,7 @@
 #include "../SFDC-delta.c"
 #include "../SFDC-gamma.c"
 
-#define BLOCK_SIZE 1000 * 1
+#define BLOCK_SIZE 1000 * 1000 * 100
 
 int get_print_interval(int total_blocks)
 {
@@ -256,7 +256,6 @@ int main(int argc, char **argv)
         huffman_trees[block_index] = root;
         compressed_size = get_compressed_size(root, map, codelen);
 
-        // print block's stats
         // print block's stats
         if (block_index % print_interval == 0)
         {
