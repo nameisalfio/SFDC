@@ -12,7 +12,7 @@
 #include "../SFDC-gamma.c"
 #include "list.c"
 
-#define RANK 10 // Number of rare markers
+#define RANK 4 // Number of rare markers
 #define BETA 20   // Common chars sequence length
 
 // int.dblp.txt
@@ -26,7 +26,7 @@
 // int.english.txt
 // ------------------------------------------------
 // #define THRESHOLD 0.095 // 2
-// #define THRESHOLD 0.030 // 4
+ #define THRESHOLD 0.030 // 4
 // #define THRESHOLD 0.028 // 6
 // #define THRESHOLD 0.026 // 8
 // #define THRESHOLD 0.028 // 10
@@ -37,7 +37,7 @@
 // #define THRESHOLD 0.044 // 4
 // #define THRESHOLD 0.046 // 6
 // #define THRESHOLD 0.037 // 8
-#define THRESHOLD 0.125 // 10
+// #define THRESHOLD 0.125 // 10
 
 typedef struct
 {
